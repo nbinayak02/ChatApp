@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+:root {
+    --color-body: #f1f5f9;
+    --color-card: #ffffff;
+    --color-primary: #16a34a;
+    --color-secondary: #15803d;
+    --color-heading: #0f172a;
+    --color-subheading: #64748b;
+    --color-card-border: #e2e8f0;
+    --color-chat: #f8fafc;
+}
+
+.dark {
+    --color-body: #0f172a;
+    --color-card: #1e293b;
+    --color-primary: #22c55e;
+    --color-secondary: #16a34a;
+    --color-heading: #f1f5f9;
+    --color-subheading: #94a3b8;
+    --color-card-border: #334155;
+    --color-chat: #141b28;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-body);
+    color: var(--color-heading);
+}
+
+@layer utilities {
+    .bg-body {
+        background-color: var(--color-body);
+    }
+
+    .bg-card {
+        background-color: var(--color-card);
+    }
+
+    .bg-primary {
+        background-color: var(--color-primary);
+    }
+
+    .bg-secondary {
+        background-color: var(--color-secondary);
+    }
+
+    .card-border {
+        border-color: var(--color-card-border)
+    }
+
+    .bg-chat {
+        border-color: var(--color-chat)
+    }
+
+    .text-heading {
+        color: var(--color-heading);
+    }
+
+    .text-subheading {
+        color: var(--color-subheading);
+    }
+}

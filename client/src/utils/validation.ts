@@ -18,3 +18,14 @@ export function validateSignup(formData: FormData) {
 
   return error;
 }
+
+export function validateLogin(formData: FormData) {
+  const username = formData.get("username")?.toString();
+  const password = formData.get("password")?.toString();
+  const error: Error = {};
+  if (!username) {
+    error.username = "Username is required.";
+  }
+  if (!password) error.password = "Password is required.";
+  return error;
+}

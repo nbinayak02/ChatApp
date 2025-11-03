@@ -1,6 +1,19 @@
 import { Link } from "react-router-dom";
+import type { FormState } from "../types/login";
+import { useActionState } from "react";
+import { performLogin } from "../api/login";
 
 export default function LoginPage() {
+  const initialState: FormState = {
+    error: {},
+    isSuccess: false,
+  };
+
+  const [state, formAction, isPending] = useActionState(
+    performLogin,
+    initialState
+  );
+
   return (
     <div className="w-[400px] bg-card border-2 card-border shadow-md rounded-xl p-5">
       <div className="flex flex-col gap-8 px-2">
@@ -8,10 +21,12 @@ export default function LoginPage() {
           <h1 className="font-semibold text-heading mb-1">Login to ChatApp</h1>
           <h3 className="text-subheading">Enter your login details.</h3>
         </div>
-        {/* <div className="bg-rose-900/50 p-2 border-2 border-rose-600/50 rounded-xl ">
-          Invalid username or password.
-        </div> */}
-        <form className="flex flex-col gap-8">
+        {state.error?.otherError && (
+          <div className="text-title bg-rose-900/50 p-2 border-2 border-rose-600/50 rounded-xl ">
+            {state.error.otherError}
+          </div>
+        )}
+        <form className="flex flex-col gap-8" action={formAction}>
           <div className="grid gap-2">
             <label htmlFor="username" className="text-title">
               Username
@@ -22,9 +37,11 @@ export default function LoginPage() {
               id="username"
               className="bg-slate-400/40 border-0 rounded-md p-2 ring-secondary focus:outline-2 outline-primary"
             />
-            {/* <label className="text-title text-rose-500">
-              Username is required
-            </label> */}
+            {state.error?.username && (
+              <label className="text-title text-rose-500">
+                {state.error.username}
+              </label>
+            )}
           </div>
           <div className="grid gap-2">
             <label htmlFor="password" className="text-title">
@@ -36,9 +53,11 @@ export default function LoginPage() {
               id="password"
               className="bg-slate-400/40 border-0 rounded-md p-2 focus:outline-2 outline-primary"
             />
-            {/* <label className="text-title text-rose-500">
-              Password is required
-            </label> */}
+            {state.error?.password && (
+              <label className="text-title text-rose-500">
+                {state.error.password}
+              </label>
+            )}
           </div>
           <div className="flex flex-row justify-end gap-2">
             <input type="checkbox" id="remember" className="accent-primary" />
@@ -49,9 +68,10 @@ export default function LoginPage() {
           <div className="grid gap-3">
             <button
               type="submit"
-              className="bg-primary p-2 rounded-md font-semibold text-white hover:bg-[#15803d] transition-colors cursor-pointer"
+              className="bg-primary p-2 rounded-md font-semibold text-white hover:bg-[#15803d] transition-colors cursor-pointer disabled:bg-slate-400"
+              disabled={isPending}
             >
-              Login
+              {isPending ? "Logging in..." : "Login"}
             </button>
 
             <p className="text-center text-title">

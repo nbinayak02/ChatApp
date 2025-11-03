@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import type { Error, FormState } from "../types/signup";
-import { useActionState, useState } from "react";
+import type { FormState } from "../types/signup";
+import { useActionState } from "react";
 import { performSignup } from "../api/signup";
 
 export default function SignupPage() {
@@ -22,7 +22,7 @@ export default function SignupPage() {
           <h3 className="text-subheading">Enter your details to signup.</h3>
         </div>
         {state.error?.serverReturnedError && (
-          <div className="bg-rose-900/50 p-2 border-2 border-rose-600/50 rounded-xl ">
+          <div className="text-title bg-rose-900/50 p-2 border-2 border-rose-600/50 rounded-xl ">
             {state.error.serverReturnedError}
           </div>
         )}

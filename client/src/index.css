@@ -16,8 +16,8 @@
 .dark {
     --color-body: #0f172a;
     --color-card: #1e293b;
-    --color-primary: #22c55e;
-    --color-secondary: #16a34a;
+    --color-primary: #16a34a;
+    --color-secondary: #15803d;
     --color-heading: #f1f5f9;
     --color-subheading: #94a3b8;
     --color-card-border: #334155;
@@ -57,9 +57,35 @@ body {
 
     .text-heading {
         color: var(--color-heading);
+        font-size: 24px;
     }
 
     .text-subheading {
         color: var(--color-subheading);
+        font-size: 16px;
     }
+
+    .text-title {
+        font-size: 14px;
+    }
+
+    .text-primary {
+        color: var(--color-primary);
+    }
+
+    .text-secondary {
+        color: var(--color-secondary);
+    }
+
+    /* for input box outline  */
+    .outline-primary {
+        outline-color: var(--color-primary);
+    }
+
+    /* for checkbox color  */
+    .accent-primary {
+        accent-color: var(--color-primary);
+    }
+
+
 }

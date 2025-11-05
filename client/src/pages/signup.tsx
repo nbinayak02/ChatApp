@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { FormState } from "../types/signup";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { performSignup } from "../api/signup";
 
 export default function SignupPage() {
+  const navigate = useNavigate();
+
   const initialState: FormState = {
     error: {},
     isSuccess: false,
@@ -13,6 +15,12 @@ export default function SignupPage() {
     performSignup,
     initialState
   );
+
+  useEffect(() => {
+    if (state.isSuccess) {
+      navigate("/login");
+    }
+  }, [state]);
 
   return (
     <div className="w-[400px] bg-card border-2 card-border shadow-md rounded-xl p-5">
@@ -28,8 +36,24 @@ export default function SignupPage() {
         )}
         <form className="flex flex-col gap-8" action={formAction}>
           <div className="grid gap-2">
+            <label htmlFor="email" className="text-title">
+              Email
+            </label>
+            <input
+              type="text"
+              name="email"
+              id="email"
+              className="bg-slate-400/40 border-0 rounded-md p-2 ring-secondary focus:outline-2 outline-primary"
+            />
+            {state.error?.email && (
+              <label className="text-title text-rose-500">
+                {state.error.email}
+              </label>
+            )}
+          </div>
+          <div className="grid gap-2">
             <label htmlFor="username" className="text-title">
-              Username
+              User Name
             </label>
             <input
               type="text"

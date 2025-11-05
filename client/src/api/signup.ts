@@ -14,6 +14,7 @@ export async function performSignup(
 
   const host = import.meta.env.VITE_API_URL;
 
+  const mail = formData.get("email")?.toString();
   const uname = formData.get("username")?.toString();
   const pass = formData.get("password")?.toString();
 
@@ -26,7 +27,9 @@ export async function performSignup(
       body: JSON.stringify({
         username: uname,
         password: pass,
+        email: mail,
       }),
+      credentials:'include',
     });
 
     const res = await response.json();

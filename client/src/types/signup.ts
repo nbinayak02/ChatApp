@@ -1,4 +1,5 @@
 export type Error = {
+  email?: string;
   username?: string;
   password?: string;
   cpassword?: string;

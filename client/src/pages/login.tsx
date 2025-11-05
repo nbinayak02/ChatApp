@@ -1,10 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { FormState } from "../types/login";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { performLogin } from "../api/login";
+import { useAuth } from "../contexts/auth";
 
 export default function LoginPage() {
+  const { login } = useAuth();
+  const [remember, setRemember] = useState<boolean>(false);
+
+  const navigate = useNavigate();
   const initialState: FormState = {
+    token: "",
     error: {},
     isSuccess: false,
   };
@@ -13,6 +19,13 @@ export default function LoginPage() {
     performLogin,
     initialState
   );
+
+  useEffect(() => {
+    if (state.token) {
+      login(state.token, remember);
+      navigate("/", { replace: true });
+    }
+  });
 
   return (
     <div className="w-[400px] bg-card border-2 card-border shadow-md rounded-xl p-5">
@@ -28,18 +41,18 @@ export default function LoginPage() {
         )}
         <form className="flex flex-col gap-8" action={formAction}>
           <div className="grid gap-2">
-            <label htmlFor="username" className="text-title">
-              Username
+            <label htmlFor="email" className="text-title">
+              Email
             </label>
             <input
               type="text"
-              name="username"
-              id="username"
+              name="email"
+              id="email"
               className="bg-slate-400/40 border-0 rounded-md p-2 ring-secondary focus:outline-2 outline-primary"
             />
-            {state.error?.username && (
+            {state.error?.email && (
               <label className="text-title text-rose-500">
-                {state.error.username}
+                {state.error.email}
               </label>
             )}
           </div>
@@ -60,7 +73,12 @@ export default function LoginPage() {
             )}
           </div>
           <div className="flex flex-row justify-end gap-2">
-            <input type="checkbox" id="remember" className="accent-primary" />
+            <input
+              type="checkbox"
+              id="remember"
+              className="accent-primary"
+              onChange={(e) => setRemember(e.target.checked)}
+            />
             <label className="text-title" htmlFor="remember">
               Remember Me
             </label>

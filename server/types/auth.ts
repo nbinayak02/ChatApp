@@ -8,7 +8,8 @@ export type Error = {
 
 export type User = {
   _id: Types.ObjectId,
-  email: string,
+  email: string;
   username: string,
-  password?: string,
+  password: string,
+  role: "admin" | "user";
 }

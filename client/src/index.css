@@ -109,4 +109,8 @@ body {
         color: var(--color-subheading);
     }
 
+    .text-unmuted {
+        color: var(--color-heading);
+    }
+
 }

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Error } from "../types/auth";
-import jwt from "jsonwebtoken";
+import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
+import { ExtendedError, Socket } from "socket.io";
 const secret = process.env.JWT_SECRET || "$ec@et$";
 
 export function validateSignup(
@@ -79,4 +80,35 @@ export function validateToken(req: Request, res: Response, next: NextFunction) {
     }
     next();
   });
+}
+
+export function validateSocket(
+  socket: Socket,
+  next: (err?: ExtendedError) => void
+) {
+  const token = socket.handshake.auth.token;
+
+  if (!token) {
+    const error = new Error("Token not found in Socket Connection");
+    next(error);
+  }
+
+  jwt.verify(
+    token,
+    secret,
+    (
+      err: JsonWebTokenError | null,
+      decoded: JwtPayload | string | undefined
+    ) => {
+      if (err) {
+        const error = new Error(
+          "Invalid token received from Socket Connection"
+        );
+        next(error);
+      } else {
+        (socket as any).user = decoded;
+        next();
+      }
+    }
+  );
 }

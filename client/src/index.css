@@ -5,6 +5,8 @@
 :root {
     --color-body: #f1f5f9;
     --color-card: #ffffff;
+    --color-scroll-thumb: #dadada;
+
     --color-primary: #16a34a;
     --color-secondary: #15803d;
     --color-heading: #0f172a;
@@ -16,6 +18,7 @@
 .dark {
     --color-body: #0f172a;
     --color-card: #1e293b;
+    --color-scroll-thumb: #334560;
     --color-primary: #16a34a;
     --color-secondary: #15803d;
     --color-heading: #f1f5f9;
@@ -23,6 +26,21 @@
     --color-card-border: #334155;
     --color-chat: #141b28;
 }
+
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-card);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-scroll-thumb);
+    border-radius: 5px;
+}
+
 
 body {
     font-family: 'Inter', sans-serif;
@@ -87,5 +105,12 @@ body {
         accent-color: var(--color-primary);
     }
 
+    .text-muted {
+        color: var(--color-subheading);
+    }
+
+    .text-unmuted {
+        color: var(--color-heading);
+    }
 
 }

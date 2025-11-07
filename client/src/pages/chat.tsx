@@ -140,7 +140,7 @@ export default function ChatPage() {
             onClick={() => setToggleSetting((prev) => !prev)}
           >
             <UserCircle2Icon size={20} /> {user ? user.name : ""}
-            {toggleSetting ? <Settings /> : <></>}
+            {user && toggleSetting ? <Settings userId={user.id}/> : <></>}
           </div>
           <LogOut
             size={20}

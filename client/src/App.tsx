@@ -8,6 +8,7 @@ import AppLayout from "./layouts/app";
 import { useAuth } from "./contexts/auth";
 import AdminLogin from "./pages/admin-login";
 import Admin from "./pages/admin";
+import Profile from "./pages/profile";
 
 function App() {
   const { token } = useAuth();
@@ -27,6 +28,8 @@ function App() {
           }
         >
           <Route path="/" element={<ChatPage />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/profile/*" element={<Profile />} />
         </Route>
       </Routes>
     </>

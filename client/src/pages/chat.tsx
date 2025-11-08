@@ -1,4 +1,11 @@
-import { LogOut } from "lucide-react";
+import {
+  LogOut,
+  SunMoon,
+  Trash2,
+  User2Icon,
+  UserCircle2Icon,
+  UserRoundPen,
+} from "lucide-react";
 import MessageBubble from "../components/message-bubble";
 import ChatGroupIcon from "../components/chat-thumb";
 import ChatDescription from "../components/chat-desc";
@@ -12,6 +19,7 @@ import useSocket from "../utils/socket";
 import Toast from "../components/toast";
 import { type ToastType } from "../types/other-types";
 import onToastTimeout from "../utils/hideToast";
+import Settings from "../components/chat-setting";
 
 export default function ChatPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -20,6 +28,7 @@ export default function ChatPage() {
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [activeNow, setActiveNow] = useState<number>(0);
   const [toast, setToast] = useState<ToastType>();
+  const [toggleSetting, setToggleSetting] = useState<boolean>(false);
   const { token, logout } = useAuth();
   const { socket, isConnected } = useSocket();
 
@@ -126,7 +135,13 @@ export default function ChatPage() {
           <ChatDescription activeNow={activeNow} isConnected={isConnected} />
         </div>
         <div className=" w-[60%] flex justify-end items-center space-x-8">
-          <p>{user ? user.name : ""}</p>
+          <div
+            className="flex flex-row justify-center items-center gap-2 border-2 card-border px-2 py-1 rounded-xl hover:card-border-bg cursor-pointer transition-colors"
+            onClick={() => setToggleSetting((prev) => !prev)}
+          >
+            <UserCircle2Icon size={20} /> {user ? user.name : ""}
+            {user && toggleSetting ? <Settings userId={user.id}/> : <></>}
+          </div>
           <LogOut
             size={20}
             className="cursor-pointer"
@@ -134,11 +149,11 @@ export default function ChatPage() {
           />
         </div>
       </div>
-
       {/* message view area  */}
       <div
         id="message-view"
         className="h-115 overflow-y-scroll flex flex-col gap-5"
+        onClick={() => setToggleSetting(false)}
       >
         {user &&
           allMessages.map((m) => {
@@ -147,7 +162,7 @@ export default function ChatPage() {
                 key={m._id}
                 message={m.message}
                 timestamp={m.createdAt}
-                sender={m.userId}
+                sender={m.userId ?? {_id:"0", username:"Deleted Account"}}
                 currentUser={user.id}
               />
             );
@@ -157,7 +172,10 @@ export default function ChatPage() {
       <div className="border-2 bg-card card-border" />
 
       {/* message input section  */}
-      <div className="py-5 rounded-b-xl">
+      <div
+        className="py-5 rounded-b-xl"
+        onClick={() => setToggleSetting(false)}
+      >
         <form
           className="flex justify-around"
           onSubmit={(e) => handleFormSubmit(e)}

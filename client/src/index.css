@@ -57,6 +57,14 @@ body {
         background-color: var(--color-card);
     }
 
+    .card-border-bg {
+        background-color: var(--color-card-border);
+    }
+
+    .hover\:card-border-bg:hover {
+        background-color: var(--color-card-border);
+    }
+
     .bg-primary {
         background-color: var(--color-primary);
     }

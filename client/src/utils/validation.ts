@@ -43,7 +43,11 @@ export function validateLogin(formData: FormData) {
   } else if (!emailRegex.test(email)) {
     error.email = "Invalid email format.";
   }
-  
-  if (!password) error.password = "Password is required.";
+
+  if (!password) {
+    error.password = "Password is required";
+  } else if (password.length < 6) {
+    error.password = "Password should be of at least 6 characters.";
+  }
   return error;
 }

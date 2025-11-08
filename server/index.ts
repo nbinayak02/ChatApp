@@ -89,7 +89,7 @@ app.use("/api/admin", validateSessionCookie, authorizeAdmin, adminRouter);
 app.use("/api/chat", validateToken, chatRouter);
 
 mongoose
-  .connect("mongodb://localhost:27017/chatapp2")
+  .connect("mongodb://localhost:27017/chatappbybinayak")
   .then(() => console.log("Connected to mongodb"))
   .catch((error) => console.error(error));
 

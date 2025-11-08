@@ -91,11 +91,16 @@ export default function LoginPage() {
             >
               {isPending ? "Logging in..." : "Login"}
             </button>
-
             <p className="text-center text-title">
               New to ChatApp?{" "}
-              <Link to={"/signup"} className="text-green-500">
+              <Link to={"/signup"} className="text-green-500 px-1">
                 Sign up here.
+              </Link>
+            </p>
+            <p className="text-center text-title">
+              Admin?
+              <Link to={"/admin"} className="text-green-500 px-1">
+                Login here.
               </Link>
             </p>
           </div>

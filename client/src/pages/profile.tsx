@@ -3,18 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/auth";
 import { type UpdateProfileReturnType, type UserDetails } from "../types/user";
 import getUserDetails from "../api/user-details";
-import {
-  Edit2,
-  LoaderIcon,
-  Mail,
-  RectangleEllipsis,
-  UserCircle2,
-} from "lucide-react";
+import { Edit2, LoaderIcon, Mail, Trash2, UserCircle2 } from "lucide-react";
 import UpdateUserName from "../api/update-name";
+import DeleteAccount from "../api/delete-account";
 
 export default function Profile() {
   const { id } = useParams();
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState<UserDetails>();
 
@@ -33,8 +28,6 @@ export default function Profile() {
     null
   );
   const [usernameInput, setUsernameInput] = useState<string>();
-  const [emailInput, setEmailInput] = useState<string>();
-  const [passwordInput, setPasswordInput] = useState<string>();
 
   useEffect(() => {
     if (!id) navigate("/");
@@ -80,6 +73,14 @@ export default function Profile() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (user && token) {
+      const isDeleted = await DeleteAccount(user?._id, token);
+
+      if (isDeleted) logout();
+    }
+  };
+
   return (
     <div className="w-[450px] bg-card border-2 card-border shadow-md rounded-xl p-5">
       <h1 className="font-semibold text-heading mb-1 ">Profile</h1>
@@ -87,7 +88,6 @@ export default function Profile() {
 
       <div className="mt-8 space-y-5 px-3">
         {/* username field  */}
-
         <div
           className="flex gap-5 items-center"
           onMouseOver={() => setOptionHover({ field: "username" })}
@@ -125,6 +125,7 @@ export default function Profile() {
           optionHover && optionHover.field === "username" ? (
             <Edit2
               size={20}
+              className="cursor-pointer"
               onClick={() => setEditClicked({ field: "username" })}
             />
           ) : (
@@ -138,48 +139,18 @@ export default function Profile() {
         ) : (
           <></>
         )}
-        {/* email filed  */}
-        <div
-          className="flex gap-5 items-center"
-          onMouseOver={() => setOptionHover({ field: "email" })}
-        >
+        {/* email field  */}
+        <div className="flex gap-5 items-center">
           <Mail size={24} />
 
-          {editClicked && editClicked.field === "email" ? (
-            <input
-              type="text"
-              value={user?.email}
-              className="bg-slate-400/40 border-0 rounded-md p-2 ring-secondary focus:outline-2 outline-primary"
-              autoFocus
-              disabled={isUpdating}
-            />
-          ) : (
-            user?.email
-          )}
-          {editClicked && editClicked.field === "email" ? (
-            <button
-              className="bg-primary py-2 px-4 rounded-md font-semibold hover:cursor-pointer disabled:cursor-progress"
-              disabled={isUpdating}
-            >
-              {isUpdating ? (
-                <p className="animate-spin">
-                  <LoaderIcon />
-                </p>
-              ) : (
-                "Save"
-              )}
-            </button>
-          ) : optionHover && optionHover.field === "email" ? (
-            <Edit2
-              size={20}
-              onClick={() => setEditClicked({ field: "email" })}
-            />
-          ) : (
-            <></>
-          )}
+          {user?.email}
         </div>
-        <div className="flex gap-5 items-center">
-          <RectangleEllipsis size={24} /> Change Password
+
+        <div
+          className="flex gap-5 items-center text-rose-500 cursor-pointer"
+          onClick={() => handleDeleteAccount()}
+        >
+          <Trash2 size={20} /> Delete Account
         </div>
       </div>
     </div>

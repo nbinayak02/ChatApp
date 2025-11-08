@@ -37,14 +37,25 @@ export async function handlePatchUsername(req: Request, res: Response) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: "Username update successful.",
-        data: updatedUser?.username,
-      });
+    return res.status(200).json({
+      message: "Username update successful.",
+      data: updatedUser?.username,
+    });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export async function handleDeleteUser(req: Request, res: Response) {
+  try {
+    const _id = req.params.id;
+    const deleted = await User.findByIdAndDelete(_id);
+    if (!deleted) {
+      return res.status(500).json({ error: "Failed to delete user." });
+    }
+    return res.status(200).json({ message: "User deleted" });
+  } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
 }

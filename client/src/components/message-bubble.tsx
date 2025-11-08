@@ -23,7 +23,11 @@ export default function MessageBubble({
         sender._id == currentUser ? `self-end` : `self-start`
       }`}
     >
-      <p className="text-sm ml-3">
+      <p
+        className={`text-sm ml-3 ${
+          sender._id === "0" ? "text-rose-500 font-semibold" : ""
+        }`}
+      >
         {sender._id === currentUser ? "You" : sender.username}
       </p>
       <p className="bg-primary text-white p-3 rounded-xl">{message}</p>

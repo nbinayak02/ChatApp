@@ -162,7 +162,7 @@ export default function ChatPage() {
                 key={m._id}
                 message={m.message}
                 timestamp={m.createdAt}
-                sender={m.userId}
+                sender={m.userId ?? {_id:"0", username:"Deleted Account"}}
                 currentUser={user.id}
               />
             );

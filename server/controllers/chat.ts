@@ -72,3 +72,13 @@ export async function saveMessage(user: TokenUser, message: string) {
     console.log(error);
   }
 }
+
+export async function handleGetTotalChats(req: Request, res: Response) {
+  try {
+    const chatCount = await Message.countDocuments();
+    return res.status(200).json({ data: chatCount });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+}

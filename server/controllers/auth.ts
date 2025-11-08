@@ -57,8 +57,7 @@ export async function handleLogin(req: Request, res: Response) {
 
 export async function createDefaultAdmin() {
   try {
-    const defaultEmail =
-      process.env.DEFAULT_ADMIN_EMAIL || "admin@chatapp.com";
+    const defaultEmail = process.env.DEFAULT_ADMIN_EMAIL || "admin@chatapp.com";
     const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || "admin123";
 
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
@@ -110,7 +109,12 @@ export async function handleAdminLogin(req: Request, res: Response) {
       return res.status(500).json({ error: "Wrong password" });
     }
 
-    return res.status(200).json({ message: "Login Successful" });
+    const token = createToken(user);
+
+    return res
+      .status(200)
+      .cookie("token", token) //session cookie - expires after session ends
+      .json({ message: "Login Successful" });
   } catch (error) {
     console.log(error);
   }

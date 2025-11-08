@@ -59,3 +59,14 @@ export async function handleDeleteUser(req: Request, res: Response) {
     return res.status(500).json({ error: "Internal server error" });
   }
 }
+
+export async function handleGetAllUsers(req: Request, res: Response) {
+  try {
+    const allUsers = await User.find({ role: "user" });
+
+    return res.status(200).json({ data: allUsers });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Error } from "../types/auth";
 import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
 import { ExtendedError, Socket } from "socket.io";
+import User from "../models/user";
 const secret = process.env.JWT_SECRET || "$ec@et$";
 
 export function validateSignup(
@@ -82,6 +83,32 @@ export function validateToken(req: Request, res: Response, next: NextFunction) {
   });
 }
 
+export function validateSessionCookie(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const token = req.cookies.token;
+
+  if (!token) return res.status(500).json({ error: "Token not found!" });
+
+  jwt.verify(
+    token,
+    secret,
+    (
+      err: JsonWebTokenError | null,
+      decoded: JwtPayload | string | undefined
+    ) => {
+      if (err) {
+        return res.status(403).json({ message: "Invalid token" });
+      } else {
+        (req as any).user = decoded;
+      }
+      next();
+    }
+  );
+}
+
 export function validateSocket(
   socket: Socket,
   next: (err?: ExtendedError) => void
@@ -111,4 +138,29 @@ export function validateSocket(
       }
     }
   );
+}
+
+export async function authorizeAdmin(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const user = (req as any).user;
+
+    if (!user) return res.status(422).json({ error: "User not validated." });
+
+    const userRole = await User.findById(user.id).select("role");
+
+    if (!userRole) return res.status(500).json({ error: "User role  not set" });
+
+    if (userRole.role === "user") {
+      return res.status(403).json({ error: "Unauthorized account." });
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 }

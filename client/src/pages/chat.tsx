@@ -1,11 +1,4 @@
-import {
-  LogOut,
-  SunMoon,
-  Trash2,
-  User2Icon,
-  UserCircle2Icon,
-  UserRoundPen,
-} from "lucide-react";
+import { LogOut, UserCircle2Icon } from "lucide-react";
 import MessageBubble from "../components/message-bubble";
 import ChatGroupIcon from "../components/chat-thumb";
 import ChatDescription from "../components/chat-desc";
@@ -140,7 +133,7 @@ export default function ChatPage() {
             onClick={() => setToggleSetting((prev) => !prev)}
           >
             <UserCircle2Icon size={20} /> {user ? user.name : ""}
-            {user && toggleSetting ? <Settings userId={user.id}/> : <></>}
+            {user && toggleSetting ? <Settings userId={user.id} /> : <></>}
           </div>
           <LogOut
             size={20}
@@ -162,7 +155,7 @@ export default function ChatPage() {
                 key={m._id}
                 message={m.message}
                 timestamp={m.createdAt}
-                sender={m.userId ?? {_id:"0", username:"Deleted Account"}}
+                sender={m.userId ?? { _id: "0", username: "Deleted Account" }}
                 currentUser={user.id}
               />
             );

@@ -5,10 +5,16 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { validateSocket, validateToken } from "./middlewares/validation";
+import {
+  authorizeAdmin,
+  validateSessionCookie,
+  validateSocket,
+  validateToken,
+} from "./middlewares/validation";
 import authRouter from "./routes/auth";
 import chatRouter from "./routes/chat";
 import userRouter from "./routes/user";
+import adminRouter from "./routes/admin";
 import {
   decrementCurrentlyActive,
   incrementCurrentlyActive,
@@ -79,6 +85,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/user", validateToken, userRouter);
+app.use("/api/admin", validateSessionCookie, authorizeAdmin, adminRouter);
 app.use("/api/chat", validateToken, chatRouter);
 
 mongoose

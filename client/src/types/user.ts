@@ -11,3 +11,12 @@ export type UserDetails = {
   updatedAt?: string;
   __v?: number;
 };
+
+export type UpdateProfileReturnType = {
+  error?: {
+    errorMessage: string;
+    field: string;
+  };
+  returnData: string;
+  isSuccess: boolean;
+};
